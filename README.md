@@ -1,235 +1,76 @@
-Excellent — this is a very real-world BMS–ROC (Building Management System → Remote Operations Center) KPI definition scenario.
-Let’s define **Key Performance Indicators (KPIs)** for the parameters you listed from the EBI 500 server, organized by category (Air Quality, Energy, and Equipment Performance).
-Each KPI includes:
+Excellent — this is a complete **BMS → ROC KPI design question**, covering **indoor environmental quality**, **energy efficiency**, and **equipment performance** from the **Honeywell EBI 500** system.
 
-* **Purpose** – why it’s tracked
-* **Action** – what operations/maintenance teams should do based on it
-* **Formula (if derived)** – how it’s calculated
-* **Visualization** – recommended chart or dashboard element
+Below is a **professional, ready-to-document table** of **all possible KPIs** derived from the listed data.
+Each row clearly defines:
 
----
-
-## 🧩 1. Air Quality and Comfort KPIs
-
-### 1.1 **Return Air CO₂ Level (ppm)**
-
-* **Purpose:** Monitor indoor air quality and ventilation effectiveness.
-* **Action:**
-
-  * If CO₂ > 1000 ppm → increase fresh air intake or inspect dampers/fans.
-  * If < 400 ppm → excessive ventilation → energy waste.
-* **Formula:** Direct sensor value.
-* **Visualization:**
-
-  * **Line chart (trend over 24 hrs)** per zone
-  * **Gauge indicator** (green ≤ 800, yellow 800–1000, red >1000)
+* **KPI Name**
+* **Parameter Source** (from your list)
+* **Formula (if derived)**
+* **Purpose**
+* **Action**
+* **Best Visualization Type**
 
 ---
 
-### 1.2 **Return Air Humidity (%)**
+## 🧭 **BMS–ROC KPI Framework (EBI 500 Data Shared to ROC)**
 
-* **Purpose:** Track occupant comfort and prevent mold/corrosion.
-* **Action:**
-
-  * Maintain between 40–60%.
-  * If high → check dehumidifier/coil temperature.
-  * If low → verify humidifier.
-* **Formula:** Direct sensor value.
-* **Visualization:**
-
-  * **Dual-axis line chart** (Humidity vs Return Air Temp)
-  * **Gauge chart** with comfort band
-
----
-
-### 1.3 **Return Air Temperature (°C)**
-
-* **Purpose:** Maintain thermal comfort and detect HVAC issues.
-* **Action:**
-
-  * Compare with supply air temperature.
-  * Sudden rise → possible coil or damper issue.
-* **Formula:** Direct sensor value.
-* **Derived KPI:**
-
-  * **Temperature Differential (ΔT)** = Supply Air Temp − Return Air Temp
-  * Indicates cooling or heating effectiveness.
-* **Visualization:**
-
-  * **Line chart** for Return, Supply, and ΔT
-  * **Heatmap** (floor vs time of day)
+| **Parameter Source**                  | **KPI Name**                            | **Formula / Definition**                               | **Purpose**                                                           | **Action / Insight**                                                             | **Best Visualization**                                          |
+| ------------------------------------- | --------------------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------- |
+| **FAD Status (Fresh Air Damper)**     | Fresh Air Utilization %                 | (Time Damper Open ÷ Total Operation Time) × 100        | To understand how often fresh air is being introduced for ventilation | Adjust damper control if open continuously (energy loss) or closed when CO₂ high | Stacked bar (Open/Closed per day), CO₂ vs FAD correlation chart |
+| **FAD Status**                        | Damper Efficiency Index                 | CO₂ Decrease ÷ (Damper Open Duration)                  | Correlates damper operation with IAQ improvement                      | If low efficiency → check actuator/fresh air duct                                | Scatter plot (CO₂ vs FAD %)                                     |
+| **Return Air CO₂ (ppm)**              | CO₂ Concentration                       | Direct CO₂ ppm sensor value                            | Measures indoor air quality and ventilation adequacy                  | Increase fresh air if >1000 ppm                                                  | Gauge (Green ≤800, Yellow 800–1000, Red >1000), Line trend      |
+| **Return Air CO₂ (ppm)**              | Average CO₂ (24 hr)                     | (Σ CO₂ readings ÷ 24 hrs)                              | Track daily IAQ trend for benchmarking                                | Investigate recurring high readings                                              | Line chart (daily average)                                      |
+| **Return Air CO₂ (ppm)**              | Peak CO₂ Value                          | Max(CO₂ per day)                                       | Identify poor IAQ events                                              | Trigger alert for >1200 ppm                                                      | Bar chart (daily peaks)                                         |
+| **Return Air CO₂ (temp)**             | Return Air Temperature (at CO₂ point)   | Direct temperature from same sensor                    | Correlate heat load with IAQ                                          | If both high CO₂ & Temp → low ventilation efficiency                             | Dual-axis trend (CO₂ vs Temp)                                   |
+| **Return Air CO₂ (temp + ppm)**       | CO₂–Temperature Correlation Index       | Correlation coefficient between CO₂ & Temp             | Detect trapped heat or poor circulation                               | If positive correlation → verify AHU airflow                                     | Scatter plot (CO₂ vs Temp)                                      |
+| **Return Air CO₂ (level)**            | IAQ Category                            | Based on ppm: <800=Good, 800–1000=Moderate, >1000=Poor | Simplify IAQ monitoring for dashboards                                | Show Red/Amber/Green indicator                                                   | Color-coded status indicator                                    |
+| **Return Air Humidity (%)**           | Humidity Level                          | Direct sensor value                                    | Maintain comfort and prevent mold                                     | Maintain 40–60%; adjust humidifier/dehumidifier                                  | Gauge or Line chart                                             |
+| **Return Air Humidity (%)**           | Comfort Compliance %                    | (Time Humidity within 40–60%) ÷ Total Time × 100       | Quantify comfort zone compliance                                      | If <80% → adjust setpoints                                                       | KPI Gauge or Area chart                                         |
+| **Return Air Temperature (°C)**       | Return Air Temperature                  | Direct sensor reading                                  | Evaluate comfort and HVAC efficiency                                  | Compare with Supply Temp                                                         | Trend line                                                      |
+| **Return Air Temperature (°C)**       | ΔT (Temperature Differential)           | Supply Air Temp − Return Air Temp                      | Assess cooling/heating coil effectiveness                             | If ΔT < expected → check coil fouling, low flow                                  | Dual-axis line (Return vs Supply)                               |
+| **Return Air Temperature + Humidity** | Thermal Comfort Index (TCI)             | Based on ASHRAE comfort chart (Temp + RH)              | Evaluate thermal comfort                                              | Adjust cooling/heating setpoints                                                 | Psychrometric chart or comfort zone heatmap                     |
+| **Energy Meter (507 units)**          | Energy Consumption                      | kWh reading from meter                                 | Track total and sectional energy consumption                          | Identify high energy zones                                                       | Trend or Pareto chart                                           |
+| **Energy Meter**                      | Specific Energy Consumption (SEC)       | Total kWh ÷ Area (m²)                                  | Measure energy intensity                                              | Benchmark against baselines                                                      | Column chart by zone                                            |
+| **Energy Meter**                      | Load Factor (%)                         | (Average Load ÷ Peak Load) × 100                       | Assess electrical load uniformity                                     | Reduce peaks to avoid penalties                                                  | Line chart (daily load curve)                                   |
+| **BTU Meter (37 units)**              | BTU Consumption                         | Flow × ΔT × 4.187 × 1000                               | Measure chilled water thermal energy                                  | Identify underperforming AHUs                                                    | Line chart (BTU/hr)                                             |
+| **BTU Meter**                         | Cooling Load (TR)                       | (BTU/hr) ÷ 12000                                       | Quantify cooling demand                                               | Compare with chiller capacity                                                    | Line chart                                                      |
+| **BTU + Energy Meter**                | Cooling Efficiency (kW/TR)              | Electrical Energy (kWh) ÷ Cooling Load (TR-hr)         | Evaluate plant energy efficiency                                      | Optimize chiller & pump sequencing                                               | Scatter (kW/TR vs Time)                                         |
+| **BTU + Energy Meter**                | System COP (Coefficient of Performance) | BTU Load (kW eq.) ÷ Electrical Input (kW)              | Assess total HVAC efficiency                                          | Tune chiller & AHU control logic                                                 | Dual-axis line (BTU vs kWh)                                     |
+| **Heat Recovery Wheel (HRW)**         | HRW Uptime %                            | (HRW Run Time ÷ Fan Operation Time) × 100              | Verify energy recovery system usage                                   | Check HRW control interlocks                                                     | Pie chart or Runtime timeline                                   |
+| **HRW + Fans**                        | HRW–Fan Correlation                     | Compare HRW ON vs Fan ON durations                     | Detect control or wiring mismatch                                     | Adjust interlocks if HRW off during fan run                                      | Binary timeline                                                 |
+| **Supply & Exhaust Fan**              | Fan Runtime Efficiency %                | (Actual Runtime ÷ Scheduled Runtime) × 100             | Validate fan operation scheduling                                     | Optimize runtime for occupancy                                                   | Runtime bar chart                                               |
+| **Return Air CO₂ + Fan Energy**       | Ventilation Effectiveness Index (VEI)   | (CO₂ Reduction per hour) ÷ Fan Energy (kWh)            | Measure IAQ improvement per energy used                               | Optimize damper and fan speed                                                    | Efficiency line chart                                           |
+| **Overall (System)**                  | Energy Utilization Index (EUI)          | Total kWh ÷ Building Area (m²)                         | Benchmark building energy performance                                 | Compare with baseline or green norms                                             | Monthly trend chart                                             |
+| **Overall (Comfort)**                 | Comfort Compliance %                    | (Time within 22–26°C and 40–60% RH) ÷ Total Time × 100 | Quantify comfort delivery performance                                 | Tune AHU/FCU control loops                                                       | KPI Gauge or Area chart                                         |
 
 ---
 
-### 1.4 **Fresh Air Damper (FAD) Status**
+### 🧠 **Summary of Focus Areas**
 
-* **Purpose:** Verify ventilation system control and IAQ compliance.
-* **Action:**
-
-  * If CO₂ high and FAD closed → control fault.
-  * If CO₂ low and FAD open continuously → energy waste.
-* **Formula:** Binary (0=Closed, 1=Open) or % opening.
-* **Derived KPI:**
-
-  * **Fresh Air Utilization %** = (Time FAD Open ÷ Total Operation Time) × 100
-* **Visualization:**
-
-  * **Stacked bar** (Open/Closed durations per day)
-  * **Correlation chart** (FAD % vs CO₂ ppm)
+| **Category**                     | **Key Performance Focus**                        | **Examples of Related KPIs**                     |
+| -------------------------------- | ------------------------------------------------ | ------------------------------------------------ |
+| **Indoor Air Quality (IAQ)**     | Maintain CO₂ < 1000 ppm, comfort temp & humidity | CO₂ Level, IAQ Category, VEI, Comfort Compliance |
+| **Energy Efficiency**            | Optimize kWh per TR and load factor              | Energy Consumption, kW/TR, COP, EUI              |
+| **Ventilation & Control Health** | Ensure coordinated damper & fan operation        | FAD Utilization %, HRW Uptime %, Fan Runtime     |
+| **Thermal Comfort**              | Maintain 22–26°C, 40–60% RH                      | Thermal Comfort Index, Comfort Deviation %       |
 
 ---
 
-## ⚡ 2. Energy and Efficiency KPIs
+### 📊 **Recommended Dashboard Layout for ROC**
 
-### 2.1 **Energy Meter (507 meters)**
-
-* **Purpose:** Track total and sectional electrical consumption.
-* **Action:**
-
-  * Identify high-load areas.
-  * Compare daily, weekly, monthly trends.
-* **Formula:** Direct meter readings.
-* **Derived KPIs:**
-
-  1. **Specific Energy Consumption (SEC)** = Total kWh ÷ Area (m²)
-  2. **Energy Intensity** = Total kWh ÷ Cooling Load (TR-hours)
-  3. **Load Factor (%)** = (Average Load ÷ Peak Load) × 100
-* **Visualization:**
-
-  * **Stacked bar chart** (Energy by floor/system)
-  * **Trend chart** for kWh over time
-  * **Pareto chart** for top 10 consuming meters
+| **Section**               | **Parameters Visualized**                            | **Visualization Type**                    |
+| ------------------------- | ---------------------------------------------------- | ----------------------------------------- |
+| **Air Quality & Comfort** | CO₂ ppm, Humidity, Return Temp, IAQ Category         | Gauges, Line Trends, Comfort Zone Heatmap |
+| **Energy Monitoring**     | Energy Meters, BTU Meters, kW/TR, COP                | Line & Pareto Charts, Efficiency Scatter  |
+| **Ventilation Systems**   | FAD, HRW, Fan Status                                 | Stacked Runtime Charts, Binary Timelines  |
+| **Performance Summary**   | Comfort Compliance %, Energy Efficiency %, IAQ Score | KPI Gauges, Weekly Summary Cards          |
 
 ---
 
-### 2.2 **BTU Meter (37 units)**
+Would you like me to export this entire KPI framework into a **ready-to-use Excel (.xlsx)** file with:
 
-* **Purpose:** Quantify chilled water/thermal energy usage.
-* **Action:**
+* Separate tabs for **Air Quality**, **Energy**, and **Equipment**,
+* Auto-sized columns,
+* Conditional color formatting (Green/Amber/Red for thresholds)?
 
-  * Identify underperforming AHUs or zones.
-  * Optimize chilled water distribution.
-* **Formula:**
-
-  * **BTU Consumption** = Flow (m³/hr) × ΔT (°C) × 4.187 × 1000
-  * **Cooling Load (TR)** = (BTU/hr) ÷ 12000
-* **Derived KPI:**
-
-  * **Cooling Efficiency (kW/TR)** = Electrical Energy (kWh) ÷ Cooling Load (TR-hours)
-* **Visualization:**
-
-  * **Line chart** (Cooling Load vs Power Consumption)
-  * **Scatter plot** (ΔT vs Flow) to detect imbalance
-
----
-
-### 2.3 **Energy vs BTU Correlation**
-
-* **Purpose:** Verify that electrical energy consumption aligns with thermal load.
-* **Action:**
-
-  * High kWh but low BTU → inefficiency in chillers or pumps.
-* **Formula:**
-
-  * **System COP** = BTU Load (kW equivalent) ÷ Electrical Input (kW)
-* **Visualization:**
-
-  * **Dual-axis line** (BTU vs kWh)
-  * **Efficiency trend** over time
-
----
-
-## 🔁 3. Equipment & Process KPIs
-
-### 3.1 **Heat Recovery Wheel (HRW) Run Status**
-
-* **Purpose:** Ensure energy recovery during ventilation operation.
-* **Action:**
-
-  * If HRW OFF while both supply & exhaust fans ON → energy loss.
-  * Monitor HRW uptime vs fan runtime.
-* **Formula:**
-
-  * **HRW Uptime %** = (HRW Run Time ÷ Fan Operation Time) × 100
-* **Visualization:**
-
-  * **Stacked time graph** (Fan vs HRW status)
-  * **Pie chart** for uptime %
-
----
-
-### 3.2 **Supply and Exhaust Fan Runtime**
-
-* **Purpose:** Validate fan operation schedules and detect failures.
-* **Action:**
-
-  * Deviations → inspect control logic or actuator issues.
-* **Formula:** Direct runtime logs.
-* **Derived KPI:**
-
-  * **Runtime Efficiency %** = (Actual Runtime ÷ Scheduled Runtime) × 100
-* **Visualization:**
-
-  * **Timeline view** or **bar chart** (hours per day)
-
----
-
-## 🌡️ 4. Combined Environmental Efficiency KPIs
-
-| KPI                                       | Formula                                                    | Purpose                                    | Action                    | Visualization                               |
-| ----------------------------------------- | ---------------------------------------------------------- | ------------------------------------------ | ------------------------- | ------------------------------------------- |
-| **Ventilation Effectiveness Index (VEI)** | (CO₂ Reduction per hour) ÷ Fan Energy (kWh)                | Evaluate air exchange efficiency vs energy | Tune damper and fan speed | Line chart                                  |
-| **Thermal Comfort Index (TCI)**           | Based on Return Air Temp + Humidity vs ASHRAE comfort zone | Occupant comfort evaluation                | Adjust setpoints          | Psychrometric chart or comfort zone heatmap |
-| **Energy Utilization Index (EUI)**        | Total kWh ÷ Building Area (m²)                             | Benchmark energy intensity                 | Compare with baseline     | Monthly trend chart                         |
-
----
-
-## 📊 Recommended Dashboard Layout (for ROC)
-
-| Section                  | KPIs                                   | Visualization Type                |
-| ------------------------ | -------------------------------------- | --------------------------------- |
-| **Air Quality**          | CO₂, Humidity, Temperature, FAD Status | Gauges, Trend lines               |
-| **Energy**               | Energy Meters, BTU Meters, kW/TR       | Trend lines, Pareto bars          |
-| **Equipment Health**     | HRW, Fans, Dampers                     | Status timelines                  |
-| **Efficiency & Comfort** | COP, ΔT, VEI, TCI                      | Combined trend + comfort zone map |
-
----
-
-Would you like me to structure this into a **tabular Excel format** (KPI | Description | Formula | Purpose | Action | Visualization)?
-That’s the format typically used for BMS–ROC handover documentation.
-Here’s the structured **tabular format** version of all KPIs related to the parameters from your BMS (EBI 500) → ROC data.
-This table is formatted so you can directly convert or export it to Excel or Power BI.
-
----
-
-### 🧭 **BMS–ROC KPI Framework**
-
-| **Parameter**                     | **KPI Name**                          | **Formula / Definition**                             | **Purpose**                                         | **Action**                                                       | **Best Visualization**                                           |
-| --------------------------------- | ------------------------------------- | ---------------------------------------------------- | --------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------- |
-| **Return Air CO₂**                | CO₂ Level (ppm)                       | Direct sensor value                                  | Monitor indoor air quality and ventilation adequacy | Increase fresh air if >1000 ppm; optimize ventilation if too low | Gauge (Green ≤800, Yellow 800–1000, Red >1000), Line trend       |
-|                                   | Fresh Air Utilization %               | (Time FAD Open ÷ Total Time) × 100                   | Assess ventilation control responsiveness           | Adjust damper control logic if FAD open continuously             | Stacked bar (Open/Closed duration), CO₂ vs FAD correlation chart |
-| **Return Air Humidity**           | Humidity Level (%)                    | Direct sensor value                                  | Ensure occupant comfort and prevent mold/corrosion  | Maintain 40–60%; check dehumidifier/humidifier if outside range  | Line chart (Humidity vs Time), Gauge                             |
-|                                   | Thermal Comfort Index (TCI)           | Based on Return Air Temp & RH vs ASHRAE comfort zone | Evaluate thermal comfort conditions                 | Adjust temperature/humidity setpoints                            | Psychrometric chart or comfort zone heatmap                      |
-| **Return Air Temperature**        | Return Air Temperature (°C)           | Direct sensor value                                  | Monitor comfort and detect HVAC inefficiency        | Compare with supply temp; check coil/damper issues if abnormal   | Trend line (Return vs Supply Temp)                               |
-|                                   | ΔT (Temperature Differential)         | Supply Air Temp − Return Air Temp                    | Assess cooling/heating effectiveness                | Low ΔT → check coil fouling or low flow                          | Dual line chart                                                  |
-| **Fresh Air Damper (FAD) Status** | Damper Open Ratio (%)                 | (Damper Open Time ÷ Total Operation Time) × 100      | Ensure correct ventilation scheduling               | Adjust damper actuator/fresh air settings                        | Stacked time chart, CO₂ vs FAD scatter                           |
-| **Energy Meter (507)**            | Energy Consumption (kWh)              | Meter reading over time                              | Track electrical energy usage                       | Identify high-load areas, schedule load optimization             | Trend line, Pareto bar chart                                     |
-|                                   | Specific Energy Consumption (SEC)     | Total kWh ÷ Area (m²)                                | Benchmark energy performance per area               | Reduce by improving lighting/HVAC efficiency                     | Column chart by building/zone                                    |
-|                                   | Load Factor (%)                       | (Average Load ÷ Peak Load) × 100                     | Assess load distribution                            | Flatten peaks via scheduling                                     | Line chart (Daily/Weekly load pattern)                           |
-| **BTU Meter (37)**                | BTU Consumption                       | Flow × ΔT × 4.187 × 1000                             | Quantify thermal energy usage                       | Identify high load or low ΔT zones                               | Trend line (BTU/hr)                                              |
-|                                   | Cooling Load (TR)                     | (BTU/hr) ÷ 12000                                     | Calculate refrigeration tonnage                     | Match against chiller performance                                | Trend or real-time gauge                                         |
-|                                   | Cooling Efficiency (kW/TR)            | Electrical Energy ÷ Cooling Load                     | Assess chiller plant efficiency                     | Optimize setpoints, check VFD or pumps                           | Scatter or line chart (Efficiency vs Time)                       |
-| **Energy vs BTU**                 | System COP                            | BTU Load (kW equivalent) ÷ Electrical Input (kW)     | Measure overall system performance                  | Tune chiller/HRW operations                                      | Dual-axis line (kWh vs BTU)                                      |
-| **Heat Recovery Wheel (HRW)**     | HRW Uptime %                          | (HRW Run Time ÷ Fan Operation Time) × 100            | Ensure energy recovery system utilization           | Check control logic if HRW off during fan operation              | Pie chart or stacked runtime graph                               |
-|                                   | HRW-Fan Correlation                   | Binary comparison (HRW ON vs Fan ON)                 | Detect bypass or control failure                    | Verify interlocks                                                | Status timeline                                                  |
-| **Supply & Exhaust Fans**         | Fan Runtime Efficiency %              | (Actual Runtime ÷ Scheduled Runtime) × 100           | Validate fan operation schedules                    | Adjust control timing to save energy                             | Runtime bar chart (hours/day)                                    |
-|                                   | Ventilation Effectiveness Index (VEI) | (CO₂ Reduction per hr) ÷ Fan Energy (kWh)            | Measure air exchange efficiency per energy used     | Optimize fan speed and damper logic                              | Line trend                                                       |
-| **Overall System**                | Energy Utilization Index (EUI)        | Total Energy (kWh) ÷ Building Area (m²)              | Benchmark building energy intensity                 | Compare with baseline or green standards                         | Monthly trend chart                                              |
-|                                   | Comfort Compliance %                  | (Time within Comfort Band ÷ Total Time) × 100        | Evaluate operational comfort performance            | Recalibrate control loops if below target                        | Area chart or KPI gauge                                          |
-
----
-
-Would you like me to generate this table as a **downloadable Excel (.xlsx)** file so you can import it into your BMS–ROC documentation or dashboard setup?
-
-
-
+It will be formatted for **BMS–ROC documentation or dashboard design**.
